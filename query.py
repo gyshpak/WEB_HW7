@@ -12,10 +12,22 @@ from my_select import *
 #         cur.execute(sql)
 #         return cur.fetchall()
 
-def query_1(args):
-    print(args)
-    result = args()
-    return result
+SELECTS = {
+    "1": select_1,
+    "2": select_2,
+    "3": select_3,
+    "4": select_4,
+    "5": select_5,
+    "6": select_6,
+    "7": select_7,
+    "8": select_8,
+    "9": select_9,
+    "10": select_10,
+
+}
+
+def run_query(args):
+    return SELECTS[args]
 
 
 def formatted_grades(args):
@@ -29,9 +41,14 @@ def formatted_grades(args):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Vrong argument try again")
+    if len(sys.argv) == 2:
+        if sys.argv[1] in SELECTS:
+            args = run_query(sys.argv[1])()
+            for print_args in formatted_grades(args):
+                print(print_args)
+            # print(args)
+        else:
+            print("Vrong argument try again")
     else:
-        args = query_1(sys.argv[1])
-        for print_args in formatted_grades(args):
-            print(print_args)
+        print("Enter argument (1-10)")
+        

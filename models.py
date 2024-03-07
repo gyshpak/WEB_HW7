@@ -22,7 +22,7 @@ class Teacher(Base):
     __tablename__ = "teachers"
     id = Column(Integer, primary_key=True)
     name = Column(String(50), nullable=False, unique=True)
-    subjects = relationship("Subject", cascade="all, delete", backref="teacher")
+    subjects = relationship("Subject", cascade="all, delete", backref="teachers")
 
 
 class Subject(Base):
