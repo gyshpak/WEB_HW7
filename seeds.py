@@ -1,12 +1,11 @@
 from connect_db import session
 from datetime import date
-from time import time
 import faker
 from faker.providers import DynamicProvider
 from models import Assessment, Group, Student, Subject, Teacher
 from random import randint, choices, choice
 
-
+# глобальні змінні для формування даних бази
 NUMBER_STUDENTS = randint(30, 50)
 NUMBER_GROUPS = ["бджілки", "квітки", "метелики"]
 NUMBER_SUBJECTS = randint(5, 8)
@@ -14,10 +13,10 @@ NUMBER_TEACHERS = randint(3, 5)
 
 
 def generate_fake_data(number_students, number_subjects, number_teachers) -> tuple():
-    """встановлюємо локаль"""
+    # встановлюємо локаль
     fake_data = faker.Faker("uk_UA")
 
-    """ список предметів для нового провайдера"""
+    #список предметів для нового провайдера
     school_subject_provider = DynamicProvider(
         provider_name="school_subject",
         elements=[
@@ -36,22 +35,22 @@ def generate_fake_data(number_students, number_subjects, number_teachers) -> tup
         ],
     )
 
-    """ додаєм нового провайдера для навчальних предметів"""
+    # додаєм нового провайдера для навчальних предметів
     fake_data.add_provider(school_subject_provider)
 
     fake_students = []  # тут зберігатимемо студентів
     fake_subjects = []  # тут зберігатимемо предмети
     fake_teachers = []  # тут зберігатимемо вчітелів
 
-    """ Згенеруємо набір студентів у кількості number_students"""
+    # Згенеруємо набір студентів у кількості number_students
     for _ in range(number_students):
         fake_students.append(fake_data.unique.name())
 
-    """ Згенеруємо набір предметів у кількості number_subjects"""
+    # Згенеруємо набір предметів у кількості number_subjects
     for _ in range(number_subjects):
         fake_subjects.append(fake_data.unique.school_subject())
 
-    """ Згенеруємо набір вчітелів у кількості number_teachers"""
+    # Згенеруємо набір вчітелів у кількості number_teachers
     for _ in range(number_teachers):
         fake_teachers.append(fake_data.unique.name())
 
@@ -73,7 +72,7 @@ def prepare_data(students, subjects, teachers) -> tuple():
         """
         for_groups.append((choice(NUMBER_GROUPS), id_st))
 
-    """ готуємо список кортежів імен вітелів"""
+    # готуємо список кортежів імен вітелів
     for_teachers = []
     for teacher in teachers:
         for_teachers.append((teacher,))
@@ -87,7 +86,7 @@ def prepare_data(students, subjects, teachers) -> tuple():
 
     start_date = date(year=2023, month=9, day=1)  # умовний початок навчання
 
-    """ формуємо оцінки та їх ваги (наші студенти більш розумні ніж тупі ;-)"""
+    # формуємо оцінки та їх ваги (наші студенти більш розумні ніж тупі ;-)
     assess = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     weights_ = [1, 2, 3, 4, 5, 5, 10, 20, 25, 15, 5, 5]
 
@@ -114,29 +113,9 @@ def prepare_data(students, subjects, teachers) -> tuple():
 
 
 def insert_data_to_db(students, groups, subjects, teachers, assessments) -> None:
-    #     """Створимо з'єднання з нашою БД та отримаємо об'єкт курсору для маніпуляцій з даними"""
 
-    #     # with sqlite3.connect("learning.db") as con:
-
-    #         # cur = con.cursor()
-
-    #         """Заповнюємо таблицю студентів. І створюємо скрипт для вставлення, де змінні, які вставлятимемо, відзначимо
-    #         знаком заповнювача (?) """
-
-    #         sql_to_students = """INSERT INTO students(name_st)
-
-    #                                        VALUES (?)"""
-
-    #         """Для вставлення відразу всіх даних скористаємося методом executemany курсора. Першим параметром буде текст
-    #         скрипта, а другим - дані (список кортежів)."""
-
-    #         cur.executemany(sql_to_students, students)
-
-    #         """ Далі вставляємо дані про групи."""
-
-    #         sql_to_groups = """INSERT INTO groups(number_gr, fr_st)
-    #                                VALUES (?, ?)"""
-
+    """Заповнюємо таблиці"""
+   
     list_stutents = []
     for i in students:
         list_stutents.append(Student(name=i[0]))
@@ -169,27 +148,6 @@ def insert_data_to_db(students, groups, subjects, teachers, assessments) -> None
     session.add_all(list_assessments)
     session.commit()
 
-
-#         cur.executemany(sql_to_groups, groups)
-
-#         sql_to_teachers = """INSERT INTO teachers(name_tc)
-#                                VALUES (?)"""
-#         cur.executemany(sql_to_teachers, teachers)
-
-#         sql_to_subjects = """INSERT INTO subjects(name_sb, fr_tc)
-#                                VALUES (?, ?)"""
-#         cur.executemany(sql_to_subjects, subjects)
-
-#         sql_to_assessments = """INSERT INTO assessment_subj(fr_st, fr_sb, assessment, date_in)
-#                               VALUES (?, ?, ?, ?)"""
-
-#         cur.executemany(sql_to_assessments, assessments)
-
-#         """ Фіксуємо наші зміни в БД"""
-
-#         con.commit()
-
-Start = time()
 
 if __name__ == "__main__":
     students, groups, subjects, teachers, assessments = prepare_data(

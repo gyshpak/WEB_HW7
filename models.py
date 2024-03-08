@@ -1,14 +1,15 @@
 from datetime import date
 
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql.schema import ForeignKey, Table
+from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.sql.sqltypes import Date
 
 
 Base = declarative_base()
 
+# створення моделій для бази даних
 
 class Student(Base):
     __tablename__ = "students"
