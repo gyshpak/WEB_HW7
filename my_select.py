@@ -104,7 +104,6 @@ def select_10():
         .select_from(Student).join(Assessment).join(Subject).join(Teacher)\
         .filter(Student.name == subquery_st, Teacher.name == subquery_te)\
         .group_by(Subject.id, Teacher.name, Student.name)
-    print(*result)
 
     rows = [('Студент','Викладач','Предмет'),(SEP,SEP,SEP)]
     rows.extend(result)

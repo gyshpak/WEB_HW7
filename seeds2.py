@@ -17,12 +17,12 @@ def insert_data_to_db(students=None, groups=None, subjects=None, teachers=None, 
         session.add_all(list_stutents)
         session.commit()
 
-    if groups is not None:
-        list_groups = []
-        for i in groups:
-            list_groups.append(Group(name=i[0], student_id=i[1]))
-        session.add_all(list_groups)
-        session.commit()
+    # if groups is not None:
+    #     list_groups = []
+    #     for i in groups:
+    #         list_groups.append(Group(name=i[0], student_id=i[1]))
+    #     session.add_all(list_groups)
+    #     session.commit()
 
     if teachers is not None:
         list_teachers = []
@@ -31,10 +31,18 @@ def insert_data_to_db(students=None, groups=None, subjects=None, teachers=None, 
         session.add_all(list_teachers)
         session.commit()
 
-    if subjects is not None:
-        list_subjects = []
-        for i in subjects:
-            list_subjects.append(Subject(name=i[0], teacher_id=i[1]))
-        session.add_all(list_subjects)
-        session.commit()
+    # if subjects is not None:
+    #     list_subjects = []
+    #     for i in subjects:
+    #         list_subjects.append(Subject(name=i[0], teacher_id=i[1]))
+    #     session.add_all(list_subjects)
+    #     session.commit()
 
+    # if assessments is not None:
+    #     list_assessments = []
+    #     for i in assessments:
+    #         list_assessments.append(
+    #             Assessment(student_id=i[0], subject_id=i[1], assesment=i[2], date_in=i[3])
+    #         )
+    #     session.add_all(list_assessments)
+    #     session.commit()

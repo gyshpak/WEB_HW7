@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser(description="Process some integers.")
 
 def hend_create(args):
     if args[0] == "Student":
-        insert_data_to_db(students=args[1])
+        insert_data_to_db(students=[args[1]])
     elif args[0] == "Group":
         insert_data_to_db(groups=args[1])
     elif args[0] == "Teacher":
